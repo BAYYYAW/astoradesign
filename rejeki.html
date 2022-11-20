@@ -14,9 +14,39 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+#snackbar{
+  position: fixed;
+  bottom: 30px;
+  color: white;
+  background: rgb(55, 180, 120);
+  padding: 13px 0px;
+  width: 100%;
+  max-width: 440px;
+  visibility: hidden;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#snackbar.show{
+  visibility: visible;
+  animation: FadeI .5s, FadeO .5s 2.5s;
+}
+
+@keyframes FadeI {
+  from {bottom: 0px; opacity: 0;}
+  to{bottom: 30px;opacity: 1;}
+}
+
+@keyframes FadeO {
+  from {bottom: 30px; opacity: 1;}
+  to{bottom: 0px; opacity: 0;}
+}
+
+
 .logo{
   padding: 70px;
-
+  background-image: url('Random.png');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   -webkit-background-size: contain;
@@ -138,17 +168,25 @@ input[type="submit"]{
       </div>
     </div>
   </form>
+  <div class="snackbar" id="snackbar">
+    Data have been submitted
+  </div>
 </body>
 <script>
+
 const scriptURL =
-'https://script.google.com/macros/s/AKfycbzqrIZRzOFPAuS6r4Y200KKVwSp_NwS3Mham7mHTfpj3sgFb0IFZFiyD63-pQX00Ll7Mg/exec'
+'https://script.google.com/macros/s/AKfycbyc5gShqYNCmsCM2lfbWAYufhA7XvpQ4D7mxs6tScdTtm0g3i3Yokf9jjpKG0Sfd49ETg/exec'
 const form = document.forms['google-sheet']
 
 form.addEventListener('submit', e=> {
   e.preventDefault()
   fetch(scriptURL, { method: 'POST', body: new FormData(form)})
   .then(form.reset())
-
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){
+    x.className = x.className.replace("show","");
+  }, 3000)
 })
 </script>
 </html>

@@ -14,6 +14,35 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+#snackbar{
+  position: fixed;
+  bottom: 30px;
+  color: white;
+  background: rgb(55, 180, 120);
+  padding: 13px 0px;
+  width: 100%;
+  max-width: 440px;
+  visibility: hidden;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#snackbar.show{
+  visibility: visible;
+  animation: FadeI .5s, FadeO .5s 2.5s;
+}
+
+@keyframes FadeI {
+  from {bottom: 0px; opacity: 0;}
+  to{bottom: 30px;opacity: 1;}
+}
+
+@keyframes FadeO {
+  from {bottom: 30px; opacity: 1;}
+  to{bottom: 0px; opacity: 0;}
+}
+
 .logo{
   padding: 70px;
   background-image: url('Logo.png');
@@ -22,18 +51,12 @@
   -webkit-background-size: contain;
   background-size: contain;
 }
-.result{
-  display: none;
+#result{
+  visibility: hidden;
 }
 
-.result button{
-  position: relative;top: 0;right: 2%;
-  transform: translateY(0%);
-  border-radius: 100px;
-  color: black;
-  font-size: 3em;
-  border: none;
-  z-index: 88;
+#result.show1{
+  visibility: visible;
 }
 
 iframe{
@@ -181,26 +204,23 @@ input[type="submit"]{
         </div>
 
         <input type="submit" value="submit">
+
       </div>
     </div>
   </form>
+  <div class="snackbar" id="snackbar">
+    Data have been submitted
+  </div>
 </body>
 <script>
 
-var x = document.getElementById("result");
 
-
-
-function closeB(){
-  x.style.display = "none";
-}
 function myResult(){
-  if ( x.style.display === "block"){
-    x.style.display = "none";
-  } else {
-    x.style.display = "block";
-  }
-
+  var y = document.getElementById("result");
+  y.className = "show1"
+  setTimeout(function(){
+    y.className = y.className.replace("show1","");
+  }, 3000)
 }
 
 const scriptURL =
@@ -211,6 +231,12 @@ form.addEventListener('submit', e=> {
   e.preventDefault()
   fetch(scriptURL, { method: 'POST', body: new FormData(form)})
   .then(form.reset())
+  .catch(error => alert("ada yang error"))
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){
+    x.className = x.className.replace("show","");
+  }, 3000)
 })
 </script>
 </html>
