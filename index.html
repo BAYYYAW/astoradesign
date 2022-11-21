@@ -32,6 +32,24 @@
   visibility: visible;
   animation: FadeI .5s, FadeO .5s 2.5s;
 }
+#snackerror{
+  position: fixed;
+  bottom: 30px;
+  color: white;
+  background: rgb(210, 80, 80);
+  padding: 13px 0px;
+  width: 100%;
+  max-width: 440px;
+  visibility: hidden;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#snackerror.showE{
+  visibility: visible;
+  animation: FadeI .5s, FadeO .5s 2.5s;
+}
 
 @keyframes FadeI {
   from {bottom: 0px; opacity: 0;}
@@ -211,9 +229,11 @@ input[type="submit"]{
   <div class="snackbar" id="snackbar">
     Data have been submitted
   </div>
+  <div class="snackerror" id="snackerror">
+    Somethings wrong
+  </div>
 </body>
 <script>
-
 
 function myResult(){
   var y = document.getElementById("result");
@@ -230,13 +250,21 @@ const form = document.forms['google-sheet']
 form.addEventListener('submit', e=> {
   e.preventDefault()
   fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-  .then(form.reset())
-  .catch(error => alert("ada yang error"))
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  setTimeout(function(){
-    x.className = x.className.replace("show","");
-  }, 3000)
+  .then(response => {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    setTimeout(function(fetch){
+      x.className = x.className.replace("show","");
+    }, 3000)
+    form.reset()
+  })
+  .catch(error => {
+    setTimeout(function(){
+      z.className = z.className.replace("showE", "");
+    }, 3000);
+    var z = document.getElementById("snackerror");
+    z.className= "showE";
+  });
 })
 </script>
 </html>
