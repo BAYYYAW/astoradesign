@@ -165,6 +165,35 @@ input[type="submit"]{
   font-size: 1em;
 }
 
+#choice{
+  margin: 12px 0;
+}
+
+.checkbox{
+  padding: 10px 18px;
+  border-radius: 10px;
+  background-color: orange;
+  color: black;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 5px;
+  transition: 0.5s;
+}
+
+input[type=checkbox]{
+  opacity: 0;
+  top: 40%;
+  position: absolute;
+}
+
+.active{
+  font-weight: 600;
+  color: white;
+  background-color: transparent;
+  box-shadow: 0px 8px 15px  rgb(103, 235, 171),0px 8px 60px  rgb(20, 164, 95);
+  transition: 0.5s;
+}
 
 #price{
   width: 100%;
@@ -189,15 +218,24 @@ input[type="submit"]{
         <div class="logo"></div>
         <div class="tag">
           <label for="nama">Nama</label>
-          <input type="text" placeholder="Nama pembeli" name="Nama">
+          <input type="text" placeholder="Nama pembeli" name="Name">
         </div>
 
         <div class="tag">
+
           <label for="">Design</label>
-          <select name="Order" id="">
-            <option value="12000">Template</option>
-            <option value="40000">Made in Order</option>
-          </select>
+          <center>
+          <div id="choice">
+            <label id="checkbox" class="checkbox">
+              Template
+            <input type="checkbox" value="12000" name="Order">
+            </label>
+            <label id="checkbox" class="checkbox">
+              Made in Order
+            <input type="checkbox" value="20000" name="Order">
+            </label>
+          </div>
+          <center>
         </div>
           <label for="additional">Additional</label>
         <div class="tag" id="price">
@@ -249,22 +287,31 @@ const form = document.forms['google-sheet']
 
 form.addEventListener('submit', e=> {
   e.preventDefault()
+  var o = document.getElementById("checkbox");
   fetch(scriptURL, { method: 'POST', body: new FormData(form)})
   .then(response => {
     var x = document.getElementById("snackbar");
     x.className = "show";
     setTimeout(function(fetch){
       x.className = x.className.replace("show","");
+      window.location.reload();
     }, 3000)
     form.reset()
-  })
+    })
   .catch(error => {
+    var z = document.getElementById("snackerror");
+    z.className= "showE";
     setTimeout(function(){
       z.className = z.className.replace("showE", "");
     }, 3000);
-    var z = document.getElementById("snackerror");
-    z.className= "showE";
   });
 })
+document.addEventListener("click", function(event){
+  if (event.target.classList.contains("checkbox")){
+    event.target.classList.toggle("active")
+  }
+})
+
+
 </script>
 </html>
