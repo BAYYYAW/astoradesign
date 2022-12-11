@@ -170,7 +170,7 @@ input[type="submit"]{
 }
 
 .checkbox{
-  padding: 10px 18px;
+  padding: 10px 15px;
   border-radius: 10px;
   background-color: orange;
   color: black;
@@ -190,6 +190,7 @@ input[type=checkbox]{
 .active{
   font-weight: 600;
   color: white;
+  padding: 10px 14px;
   background-color: transparent;
   box-shadow: 0px 8px 15px  rgb(103, 235, 171),0px 8px 60px  rgb(20, 164, 95);
   transition: 0.5s;
@@ -287,14 +288,17 @@ const form = document.forms['google-sheet']
 
 form.addEventListener('submit', e=> {
   e.preventDefault()
-  var o = document.getElementById("checkbox");
+  var parent = document.querySelector("#choice")
+  var el = parent.querySelectorAll("label.checkbox.active")
+  for (var i = 0; i < el.length; i++){
+    el[i].classList.remove("active")
+  }
   fetch(scriptURL, { method: 'POST', body: new FormData(form)})
   .then(response => {
     var x = document.getElementById("snackbar");
     x.className = "show";
     setTimeout(function(fetch){
       x.className = x.className.replace("show","");
-      window.location.reload();
     }, 3000)
     form.reset()
     })
